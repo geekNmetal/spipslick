@@ -5,7 +5,7 @@
     etat="dev"
     compatibilite="[3.1.0;3.1.*]"
     logo="prive/themes/spip/images/spipslick-64.png"
-    documentation=""
+    documentation="https://github.com/geekNmetal/spipslick"
     schema="1.4.0" 
 >
     <!--
