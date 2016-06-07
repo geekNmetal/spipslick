@@ -1,0 +1,8 @@
+#FORMULAIRE_RECHERCHE_ECRIRE{#SELF,ajax}
+<div class="nettoyeur"></div>
+
+<INCLURE{fond=prive/objets/liste/sliders, par=titre, env, ajax, sinon=<:slider:info_aucun_slider:>}>
+
+[(#AUTORISER{creer,slider})
+	[(#URL_ECRIRE{slider_edit,new=oui}|icone_verticale{<:slider:icone_creer_slider:>,slider,new,right})]
+]

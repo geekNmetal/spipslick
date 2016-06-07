@@ -1,0 +1,15 @@
+
+<BOUCLE_slider(SLIDERS){id_slider}>
+
+[<div class="champ contenu_titre[ (#TITRE*|strlen|?{'',vide})]">
+	<label><:slider:champ_titre_label:> : </label>
+	<span dir='#LANG_DIR' class='#EDIT{titre} titre'>(#TITRE)</span>
+</div>]
+
+<div>
+    <p><b>Insérez &lt;spipslick|slider=#ID_SLIDER&gt; dans vos objets éditoriaux pour y afficher ce carrousel</b></p>
+</div>
+
+[(#MODELE{spipslick, slider=#ID_SLIDER})]
+
+</BOUCLE_slider>

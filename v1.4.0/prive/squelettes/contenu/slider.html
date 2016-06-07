@@ -1,0 +1,46 @@
+
+[(#AUTORISER{voir,slider,#ID_SLIDER}|sinon_interdire_acces)]
+<BOUCLE_slider(SLIDERS){id_slider}{si #ENV{exec}|=={slider}}>
+[(#BOITE_OUVRIR{[
+	[(#AUTORISER{modifier,slider,#ID_SLIDER})
+		[(#ID_SLIDER|afficher_qui_edite{slider}|non)
+			[(#URL_ECRIRE{slider_edit,id_slider=#ID_SLIDER}|icone_verticale{<:slider:icone_modifier_slider:>,slider,edit,right ajax preload})]
+		]
+		[(#ID_SLIDER|afficher_qui_edite{slider}|oui)
+			[(#URL_ECRIRE{slider_edit,id_slider=#ID_SLIDER}|icone_verticale{#ID_SLIDER|afficher_qui_edite{slider},warning-24,'',right edition_deja ajax preload})]
+		]
+	]
+
+	<h1>[(#RANG). ](#TITRE|sinon{<:info_sans_titre:>})[(#CHEMIN_IMAGE{slider-24.png}|balise_img{slider,cadre-icone})]</h1>
+
+],simple fiche_objet})]
+
+<div class="ajax">
+	#FORMULAIRE_DATER{slider,#ID_SLIDER}
+</div>
+
+<!--affiche_milieu-->
+<div id="wysiwyg">
+<INCLURE{fond=prive/objets/contenu/slider,id=#ID_SLIDER,id_slider=#ID_SLIDER,virtuel=oui,ajax=wysiwyg,wysiwyg=1}>
+</div>
+
+<div class="nettoyeur"></div>
+
+[(#AUTORISER{modifier,slider,#ID_SLIDER})
+	[(#ID_SLIDER|afficher_qui_edite{slider}|non)
+		[(#URL_ECRIRE{slider_edit,id_slider=#ID_SLIDER}|icone_verticale{<:slider:icone_modifier_slider:>,slider,edit,right ajax preload})]
+	]
+	[(#ID_SLIDER|afficher_qui_edite{slider}|oui)
+		[(#URL_ECRIRE{slider_edit,id_slider=#ID_SLIDER}|icone_verticale{#ID_SLIDER|afficher_qui_edite{slider},warning-24,'',right edition_deja ajax preload})]
+	]
+]
+
+#PIPELINE{afficher_complement_objet,#ARRAY{args,#ARRAY{type,slider,id,#ID_SLIDER},data,'<div class="nettoyeur"></div>'}}
+
+#BOITE_FERMER
+[(#EVAL{_AJAX}|oui)
+	<script type="text/javascript">/*<!\\[CDATA\\[*/reloadExecPage('#ENV{exec}','#navigation,#chemin,#extra');/*\\]\\]>*/</script>
+]
+</BOUCLE_slider>
+[(#ENV**{exec}|=={slider_edit}|?{#INCLURE{fond=prive/squelettes/contenu/slider_edit,redirect='',env,retourajax=oui},#REM|sinon_interdire_acces})]
+<//B_slider>

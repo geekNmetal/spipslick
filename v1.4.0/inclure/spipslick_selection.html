@@ -1,0 +1,65 @@
+[(#SET{selection, #ENV{selection}})]
+[(#SET{selection, #GET{selection}|explode{','}})]
+#SET{items, #ARRAY}
+<BOUCLE_set_objet(DATA){source tableau, #GET{selection}}>
+    #SET{items, #GET{items}|push{#VALEUR|explode{'|'}}}
+</BOUCLE_set_objet>
+
+<B_items>
+    <ul class="sortable-container">
+        <li id="slides">
+            <p class='explication'>Réorganisez le carrousel en faisant glisser les éléments </p>
+            <ul id='spipslick_items'>
+                <BOUCLE_items(DATA){source tableau, #GET{items}}>
+                    <BOUCLE_art(CONDITION){si #VALEUR|table_valeur{0} |== {'article'}}>
+                        <BOUCLE_articles(articles){id_article=#VALEUR|table_valeur{1}}>
+                            <li class='sortable' id='[(#VALEUR|table_valeur{0})]|#ID_ARTICLE'>
+                                <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                                [<span>
+                                    (#LOGO_ARTICLE|image_passe_partout{100,60}|image_recadre{100,60,center,transparent})
+                                </span>]
+                                <span>
+                                    [(#VALEUR|table_valeur{0})] n° #ID_ARTICLE<br/>
+                                    <b>#TITRE</b>
+                                </span>
+                                <!--<ul class="sortable-container"></ul>-->
+                            </li>
+                        </BOUCLE_articles>
+                    </BOUCLE_art>
+
+                    <BOUCLE_rub(CONDITION){si #VALEUR|table_valeur{0} |== {'rubrique'}}>
+                        <BOUCLE_rubriques(RUBRIQUES){id_rubrique=#VALEUR|table_valeur{1}}>
+                            <li class='sortable' id='[(#VALEUR|table_valeur{0})]|#ID_RUBRIQUE'>
+                                <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                                [<span>
+                                    (#LOGO_RUBRIQUE|image_passe_partout{100,60}|image_recadre{100,60,center,transparent})
+                                </span>]
+                                <span>
+                                    [(#VALEUR|table_valeur{0})] n° #ID_RUBRIQUE<br/>
+                                    <b>#TITRE</b>
+                                </span>
+                                <!--<ul class="sortable-container"></ul>-->
+                            </li>
+                        </BOUCLE_rubriques>
+                    </BOUCLE_rub>
+
+                    <BOUCLE_doc(CONDITION){si #VALEUR|table_valeur{0} |== {'document'}}>
+                        <BOUCLE_documents(DOCUMENTS){id_document=#VALEUR|table_valeur{1}}>
+                            <li class='sortable' id='[(#VALEUR|table_valeur{0})]|#ID_DOCUMENT'>
+                                <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+                                [<span>
+                                    (#FICHIER|image_passe_partout{100,60}|image_recadre{100,60,center,transparent})
+                                </span>]
+                                <span>
+                                    [(#VALEUR|table_valeur{0})] n° #ID_DOCUMENT<br/>
+                                    <b>[(#TITRE|oui|?{#TITRE, #FICHIER|basename})]</b>
+                                </span>
+                                <!--<ul class="sortable-container"></ul>-->
+                        </BOUCLE_documents>
+                    </BOUCLE_doc>
+
+                </BOUCLE_items>
+            </ul>
+        </li>
+    </ul>
+</B_items>

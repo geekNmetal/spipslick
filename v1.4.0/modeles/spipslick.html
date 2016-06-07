@@ -1,0 +1,163 @@
+[(#REM) Modèle spipslick ]
+
+
+<BOUCLE_slider(SLIDERS){id_slider=#ENV{slider}}>
+    #SET{largeur, #LARGEUR}
+    #SET{hauteur, #HAUTEUR}
+
+    [(#SET{selection, #SELECTION|explode{','}})]
+    #SET{items, #ARRAY}
+
+    <BOUCLE_set_objet(DATA){source tableau, #GET{selection}}>
+        #SET{items, #GET{items}|push{#VALEUR|explode{'|'}}}
+    </BOUCLE_set_objet>
+
+    
+    <h3>#TITRE</h3>
+    <div class="spipslick" id="spipslick-#ENV{slider}">
+        <BOUCLE_items(DATA){source tableau, #GET{items}}>
+            <BOUCLE_art(CONDITION){si #VALEUR|table_valeur{0} |== {'article'}}>
+                <BOUCLE_articles(ARTICLES){id_article=#VALEUR|table_valeur{1}}>
+                    <div>
+                        [<a href="[(#LOGO_ARTICLE|extraire_attribut{src})]" class="mediabox" rel="spipslick-#ENV{id}">
+                            (#LOGO_ARTICLE
+                                |image_passe_partout{#GET{largeur},#GET{hauteur}}
+                                |image_recadre{#GET{largeur},#GET{hauteur}, center, transparent}
+                                |inserer_attribut{alt,#TITRE}
+                            )
+                        </a>]
+                        <div class='description'>
+                            <a href='#URL_ARTICLE'>
+                                [<h3>(#TITRE)</h3>]
+                            </a>
+                            [<p>(#CHAPO|?{#CHAPO|couper{300}, #TEXTE*|couper{300}})</p>]
+                        </div>
+                    </div>
+                </BOUCLE_articles>
+            </BOUCLE_art>
+
+            <BOUCLE_rub(CONDITION){si #VALEUR|table_valeur{0} |== {'rubrique'}}>
+                <BOUCLE_rubriques(RUBRIQUES){id_rubrique=#VALEUR|table_valeur{1}}>
+                    <div>
+                        [<a href="[(#LOGO_RUBRIQUE|extraire_attribut{src})]" class="mediabox" rel="spipslick-#ENV{id}">
+                            (#LOGO_RUBRIQUE
+                                |image_passe_partout{#GET{largeur},#GET{hauteur}}
+                                |image_recadre{#GET{largeur},#GET{hauteur}, center, transparent}
+                                |inserer_attribut{alt,#TITRE}
+                            )
+                        </a>]
+                        <div class='description'>
+                            <a href='#URL_RUBRIQUE'>
+                                [<h3>(#TITRE)</h3>]
+                            </a>
+                            [<p>(#CHAPO|?{#CHAPO|couper{300}, #TEXTE*|couper{300}})</p>]
+                        </div>
+                    </div>
+                </BOUCLE_rubriques>
+            </BOUCLE_rub>
+
+            <BOUCLE_doc(CONDITION){si #VALEUR|table_valeur{0} |== {'document'}}>
+                <BOUCLE_documents(DOCUMENTS){id_document=#VALEUR|table_valeur{1}}>
+                    [<div>
+                        <a href="#FICHIER" class="mediabox" >
+                            (#FICHIER
+                                |image_passe_partout{#GET{largeur},#GET{hauteur}}
+                                |image_recadre{#GET{largeur},#GET{hauteur}, center, transparent}
+                                |inserer_attribut{alt,#TITRE}
+                            )
+                        </a>
+                        [(#TITRE|ou{#DESCRIPTIF}|ou{#CREDITS}|?{
+                            <div class='description'>
+                                [<p>(#TITRE)</p>]
+                                [<p>(#DESCRIPTIF)</p>]
+                                [<p>Crédits : (#CREDITS)</p>]
+                            </div>
+                        })]
+                                <div class="rollon"></div>
+                        
+                    </div>]
+                </BOUCLE_documents>
+            </BOUCLE_doc>
+        </BOUCLE_items>
+    </div>
+
+    <script>
+        /* <![CDATA[ */
+        $(document).ready(function () {
+            $('#spipslick-#ENV{slider}').slick({
+
+                [accessibility: (#LG_ACCESSIBILITY), ]
+                [adaptiveHeight: (#LG_ADAPTIVEHEIGHT), ]
+                [autoplay: (#LG_AUTOPLAY), ]
+                [autoplaySpeed: (#LG_AUTOPLAYSPEED), ]
+                [arrows: (#LG_ARROWS), ]
+                [centerMode: (#LG_CENTERMODE), ]
+                [dots: (#LG_DOTS), ]
+                [dots: (#LG_PAUSEONDOTSHOVER), ]
+                [fade: (#LG_FADE), ]
+                [speed: (#LG_SPEED), ]
+                [slidesToScroll: (#LG_SLIDESTOSCROLL), ]
+                [slidesToShow: (#LG_SLIDESTOSHOW), ]
+                [vertical: (#LG_VERTICAL), ]
+
+                responsive: [
+                    {
+                        breakpoint: #LG_BREAKPOINT,
+                        settings: {
+                            [(#MD_ACCESSIBILITY | != {#LG_ACCESSIBILY} | ?{accessibility: #MD_ACCESSIBILITY}), ]
+                            [(#MD_ADAPTIVEHEIGHT | != {#LG_ADAPTIVEHEIGHT} | ?{adaptiveHeight: #MD_ADAPTIVEHEIGHT}), ]
+                            [(#MD_AUTOPLAY | != {#LG_AUTOPLAY} | ?{autoplay: #MD_AUTOPLAY}), ]
+                            [(#MD_AUTOPLAYSPEED | != {#LG_AUTOPLAYSPEED} | ?{autoplaySpeed: #MD_AUTOPLAYSPEED}), ]
+                            [(#MD_ARROWS | != {#LG_ARROWS} | ?{arrows: #MD_ARROWS}), ]
+                            [(#MD_CENTERMODE | != {#LG_CENTERMODE} | ?{centerMode: #MD_CENTERMODE}), ]
+                            [(#MD_DOTS | != {#LG_DOTS} | ?{dots: #MD_DOTS}), ]
+                            [(#MD_PAUSEONDOTSHOVER | != {#LG_PAUSEONDOTSHOVER} | ?{pauseOnDotsHover: #MD_PAUSEONDOTSHOVER}), ]
+                            [(#MD_FADE | != {#LG_FADE} | ?{fade: #MD_FADE}), ]
+                            [(#MD_SPEED | != {#LG_SPEED} | ?{speed: #MD_SPEED}), ]
+                            [(#MD_SLIDESTOSCROLL | != {#LG_SLIDESTOSCROLL} | ?{slidesToScroll: #MD_SLIDESTOSCROLL}), ]
+                            [(#MD_SLIDESTOSHOW | != {#LG_SLIDESTOSHOW} | ?{slidesToShow: #MD_SLIDESTOSHOW}), ]
+                            [(#MD_VERTICAL | != {#LG_VERTICAL} | ?{vertical: #MD_VERTICAL}), ]
+                        }
+                    },
+                    {
+                        breakpoint: #MD_BREAKPOINT,
+                        settings: {
+                            [(#SM_ACCESSIBILITY | != {#LG_ACCESSIBILY} | ?{accessibility: #SM_ACCESSIBILITY}), ]
+                            [(#SM_ADAPTIVEHEIGHT | != {#LG_ADAPTIVEHEIGHT} | ?{adaptiveHeight: #SM_ADAPTIVEHEIGHT}), ]
+                            [(#SM_AUTOPLAY | != {#LG_AUTOPLAY} | ?{autoplay: #SM_AUTOPLAY}), ]
+                            [(#SM_AUTOPLAYSPEED | != {#LG_AUTOPLAYSPEED} | ?{autoplaySpeed: #SM_AUTOPLAYSPEED}), ]
+                            [(#SM_ARROWS | != {#LG_ARROWS} | ?{arrows: #SM_ARROWS}), ]
+                            [(#SM_CENTERMODE | != {#LG_CENTERMODE} | ?{centerMode: #SM_CENTERMODE}), ]
+                            [(#SM_DOTS | != {#LG_DOTS} | ?{dots: #SM_DOTS}), ]
+                            [(#SM_PAUSEONDOTSHOVER | != {#LG_PAUSEONDOTSHOVER} | ?{pauseOnDotsHover: #SM_PAUSEONDOTSHOVER}), ]
+                            [(#SM_FADE | != {#LG_FADE} | ?{fade: #SM_FADE}), ]
+                            [(#SM_SPEED | != {#LG_SPEED} | ?{speed: #SM_SPEED}), ]
+                            [(#SM_SLIDESTOSCROLL | != {#LG_SLIDESTOSCROLL} | ?{slidesToScroll: #SM_SLIDESTOSCROLL}), ]
+                            [(#SM_SLIDESTOSHOW | != {#LG_SLIDESTOSHOW} | ?{slidesToShow: #SM_SLIDESTOSHOW}), ]
+                            [(#SM_VERTICAL | != {#LG_VERTICAL} | ?{vertical: #SM_VERTICAL}), ]
+                        }
+                    },
+                    {
+                        breakpoint: #SM_BREAKPOINT,
+                        settings: {
+                            [(#XS_ACCESSIBILITY | != {#LG_ACCESSIBILY} | ?{accessibility: #XS_ACCESSIBILITY}), ]
+                            [(#XS_ADAPTIVEHEIGHT | != {#LG_ADAPTIVEHEIGHT} | ?{adaptiveHeight: #XS_ADAPTIVEHEIGHT}), ]
+                            [(#XS_AUTOPLAY | != {#LG_AUTOPLAY} | ?{autoplay: #XS_AUTOPLAY}), ]
+                            [(#XS_AUTOPLAYSPEED | != {#LG_AUTOPLAYSPEED} | ?{autoplaySpeed: #XS_AUTOPLAYSPEED}), ]
+                            [(#XS_ARROWS | != {#LG_ARROWS} | ?{arrows: #XS_ARROWS}), ]
+                            [(#XS_CENTERMODE | != {#LG_CENTERMODE} | ?{centerMode: #XS_CENTERMODE}), ]
+                            [(#XS_DOTS | != {#LG_DOTS} | ?{dots: #XS_DOTS}), ]
+                            [(#XS_PAUSEONDOTSHOVER | != {#LG_PAUSEONDOTSHOVER} | ?{pauseOnDotsHover: #XS_PAUSEONDOTSHOVER}), ]
+                            [(#XS_FADE | != {#LG_FADE} | ?{fade: #XS_FADE}), ]
+                            [(#XS_SPEED | != {#LG_SPEED} | ?{speed: #XS_SPEED}), ]
+                            [(#XS_SLIDESTOSCROLL | != {#LG_SLIDESTOSCROLL} | ?{slidesToScroll: #XS_SLIDESTOSCROLL}), ]
+                            [(#XS_SLIDESTOSHOW | != {#LG_SLIDESTOSHOW} | ?{slidesToShow: #XS_SLIDESTOSHOW}), ]
+                            [(#XS_VERTICAL | != {#LG_VERTICAL} | ?{vertical: #XS_VERTICAL}), ]
+                        }
+                    }
+                ]
+            });
+        });
+                /* ]]> */
+    </script>
+</BOUCLE_slider>

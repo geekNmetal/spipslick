@@ -1,0 +1,86 @@
+<div class="formulaire_spip formulaire_configurer formulaire_#FORM">
+
+	<h3 class="titrem"><:slider:cfg_titre_configuration:></h3>
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	<form method="post" action="#ENV{action}">
+	<div>
+		#ACTION_FORMULAIRE{#ENV{action}}
+
+		<ul class='formulaire_configurer-onglets'>
+                <li class='actif'>
+                    <a href='' class='trigger' data-target='contenu'>Contenu</a>
+                </li>
+                <li>
+                    <a href='' class='trigger' data-target='lg'>Écran large</a>
+                </li>
+                <li>
+                    <a href='' class='trigger' data-target='md'>Écran moyen</a>
+                </li>
+                <li>
+                    <a href='' class='trigger' data-target='sm'>Tablette</a>
+                </li>
+                <li>
+                    <a href='' class='trigger' data-target='xs'>Mobile</a>
+                </li>
+            </ul>
+            <div class='contenu target' data-target='contenu'>
+               
+                [(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
+                <!--extra-->
+
+
+
+                    [(#SAISIE{hidden, selection,
+                    label=<:slider:champ_selection_label:>,
+                    explication=<:slider:champ_selection_explication:>[,
+                    (#SELECTION|!={''}|{
+                    defaut=''})]
+                    })]
+
+                    [(#SAISIE{input, largeur,
+                    label=<:slider:champ_largeur_label:>,
+                    explication=<:slider:champ_largeur_explication:>,
+                    defaut=[(#CONFIG{spipslick/largeur})]})]
+
+                    [(#SAISIE{input, hauteur,
+                    label=<:slider:champ_hauteur_label:>,
+                    explication=<:slider:champ_hauteur_explication:>,
+                    defaut=[(#CONFIG{spipslick/hauteur})]})]
+
+
+
+        </div>
+        <!--            <ul class='config-slider target lg' data-target='lg'></ul>-->
+        [(#GENERER_SAISIES{#ENV{_saisies}})]
+
+		<input type="hidden" name="_meta_casier" value="spipslick" />
+		<p class="boutons"><span class="image_loading">&nbsp;</span><input type="submit" class="submit" value="<:bouton_enregistrer:>" /></p>
+	</div>
+	</form>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('div.lg').wrapAll('<div class="config-slider target lg" data-target="lg" />');
+        $('div.md').wrapAll('<div class="config-slider target md" data-target="md" />');
+        $('div.sm').wrapAll('<div class="config-slider target sm" data-target="sm" />');
+        $('div.xs').wrapAll('<div class="config-slider target xs" data-target="xs" />');
+        $('div.av').wrapAll('<div class="config-slider target av" data-target="av" />');
+        $('.trigger').each(function () {
+            $(this).click(function () {
+                $('li.actif').removeClass('actif');
+                $(this).parent('li').addClass('actif');
+                var target = $(this).attr('data-target');
+                $('div.target:visible').hide();
+                $('div[class~=' + target + ']').show();
+                return false;
+            });
+        });
+
+        
+    });
+</script>
